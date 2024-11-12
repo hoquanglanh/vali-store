@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Giỏ hàng - SHOPVALI.COM</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #FFD700;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-menu li a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            transition: color 0.3s;
+        }
+
+        .nav-menu li a:hover {
+            color: #FFD700;
+        }
+
+        /* Features Banner */
+        .features-banner {
+            background-color: #FFE4B5;
+            padding: 15px 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        /* Main Content Styles */
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin: 30px 0;
+            font-size: 2.5em;
+        }
+
+        .cart-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .empty-cart p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 100px 2fr 1fr 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .item-details h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .item-price {
+            color: #e63946;
+            font-weight: bold;
+        }
+
+        .item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            background: #f0f0f0;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .item-total {
+            color: #e63946;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .cart-summary {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f8f8;
+            border-radius: 8px;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-top: 2px solid #ddd;
+            margin-top: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .checkout-btn {
+            background-color: #e63946;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 4px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .checkout-btn:hover {
+            background-color: #d62f3d;
+        }
+
+        .continue-shopping {
+            background-color: #2a9d8f;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .continue-shopping:hover {
+            background-color: #248579;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background-color: #f8f8f8;
+            padding: 40px 20px;
+            margin-top: 50px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #666;
+            text-decoration: none;
+            margin: 8px 0;
+            display: block;
+            line-height: 1.6;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-icons a:hover {
+            color: #FFD700;
+        }
+
+        @media (max-width: 768px) {
+            .cart-item {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .cart-item img {
+                margin: 0 auto;
+            }
+
+            .item-quantity {
+                justify-content: center;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-menu {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+    <nav class="nav-container">
+        <a href="/products" class="logo">SHOPVALI.COM</a>
+        <ul class="nav-menu">
+            <li><a href="#">BÁN CHẠY</a></li>
+            <li><a href="#">THƯƠNG HIỆU</a></li>
+            <li><a href="#">NAM</a></li>
+            <li><a href="#">NỮ</a></li>
+            <li><a href="#">SỬA CHỮA</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Main Content -->
+<div class="main-content">
+    <h1>Giỏ hàng của bạn</h1>
+
+    <div class="cart-container">
+        <div th:if="${cartItems.isEmpty()}" class="empty-cart">
+            <p>Giỏ hàng của bạn đang trống</p>
+            <a href="/products" class="continue-shopping">Tiếp tục mua sắm</a>
+        </div>
+
+        <div th:unless="${cartItems.isEmpty()}">
+            <div th:each="item : ${cartItems}" class="cart-item">
+                <img th:src="@{'/images/' + ${item.product.imageUrl}}" alt="Product Image"/>
+                <div class="item-details">
+                    <h3 th:text="${item.product.name}">Product Name</h3>
+                    <p th:text="${item.product.description}">Product Description</p>
+                </div>
+                <div class="item-price">
+                    <span th:text="${#numbers.formatDecimal(item.product.price, 2, 'COMMA', 0, 'POINT')}">0.00</span>$
+                </div>
+                <div class="item-quantity">
+                    <button class="quantity-btn">-</button>
+                    <span th:text="${item.quantity}">0</span>
+                    <button class="quantity-btn">+</button>
+                </div>
+                <div class="item-total">
+                    <span th:text="${item.product.price * item.quantity}">0.00</span>$
+                </div>
+            </div>
+
+            <div class="cart-summary">
+                <div class="cart-total">
+                    <span>Tổng cộng:</span>
+                    <span th:text="${#numbers.formatDecimal(totalAmount, 2, 'COMMA', 0, 'POINT')}">0.00</span>$
+                </div>
+                <button onclick="window.location.href='/order/checkout'" class="checkout-btn">Tiến hành thanh toán</button>
+                <button onclick="window.location.href='/products'" class="continue-shopping">Tiếp tục mua sắm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Banner -->
+<div class="features-banner">
+    <div class="feature-item">
+        <span>100% HÀNG CHÍNH HÃNG</span>
+    </div>
+    <div class="feature-item">
+        <span>MIỄN PHÍ VẬN CHUYỂN</span>
+    </div>
+    <div class="feature-item">
+        <span>BẢO HÀNH CHÍNH HÃNG</span>
+    </div>
+    <div class="feature-item">
+        <span>ĐỔI HÀNG TRONG 7 NGÀY</span>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>SHOWROOM 1</h3>
+            <p>202 Phan Xích Long, Phường 7, Quận Phú Nhuận, TP HCM</p>
+            <p>📞 0902.678.910</p>
+            <p>⏰ Thời gian mở cửa: 8h30 – 21h30</p>
+        </div>
+        <div class="footer-section">
+            <h3>SHOWROOM 2</h3>
+            <p>276 Nguyễn Văn Lương, Phường 12, Quận 6, TP. Hồ Chí Minh</p>
+            <p>📞 0902.678.910</p>
+            <p>⏰ Thời gian mở cửa: 8h30 – 21h30</p>
+        </div>
+        <div class="footer-section">
+            <h3>SHOWROOM 3</h3>
+            <p>479 Đường Quang Trung, Phường 10, Quận Gò Vấp, TP. Hồ Chí Minh</p>
+            <p>📞 0902.678.910</p>
+            <p>⏰ Thời gian mở cửa: 8h30 – 21h30</p>
+        </div>
+        <div class="footer-section">
+            <h3>VỀ CHÚNG TÔI</h3>
+            <p>SHOP Đồng Hồ Nam Nữ Chính Hãng Từ Năm 2004</p>
+            <div class="social-icons">
+                <a href="#" title="Facebook">Facebook</a>
+                <a href="#" title="YouTube">YouTube</a>
+                <a href="#" title="Instagram">Instagram</a>
+                <a href="#" title="TikTok">TikTok</a>
+            </div>
+            <p>HOTLINE: 0902.678.910</p>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
