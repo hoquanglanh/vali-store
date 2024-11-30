@@ -10,6 +10,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
         }
 
         /* Header Styles */
@@ -92,10 +93,19 @@
             font-size: 2.5em;
         }
 
-        h2 {
-            color: #444;
-            margin: 20px 0;
-            font-size: 1.8em;
+        .section-header {
+            /*background-color: #FFD700;*/
+            padding: 20px;
+            margin: 40px 0 20px 0;
+            border-radius: 8px;
+            color: #333;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        section {
+            padding-top: 70px;
+            margin-top: -70px;
         }
 
         .products-container {
@@ -190,15 +200,6 @@
             border-bottom: 1px solid #eee;
         }
 
-        #cart-items p {
-            margin: 5px 0;
-            color: #444;
-        }
-
-        #cart-items strong {
-            color: #e63946;
-        }
-
         .checkout-btn {
             background-color: #e63946;
             width: 100%;
@@ -247,12 +248,6 @@
             margin-top: 15px;
         }
 
-        .social-icons a {
-            color: #666;
-            font-size: 20px;
-            transition: color 0.3s;
-        }
-
         .social-icons a:hover {
             color: #FFD700;
         }
@@ -280,17 +275,6 @@
             .products-container {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
-            .nav-menu li a svg {
-                width: 24px;
-                height: 24px;
-                color: #333;
-                transition: color 0.3s;
-            }
-
-            .nav-menu li a:hover svg {
-                color: #FFD700;
-            }
-
         }
     </style>
 </head>
@@ -298,35 +282,30 @@
 <!-- Header -->
 <header class="header">
     <nav class="nav-container">
-        <a href="/products" class="logo">SHOPVALI.COM</a>
+        <a href="#" class="logo">SHOPVALI.COM</a>
         <ul class="nav-menu">
-            <li><a href="/valis">Vali</a></li>
-            <li><a href="#">THƯƠNG HIỆU</a></li>
-            <li><a href="#">NAM</a></li>
-            <li><a href="#">NỮ</a></li>
-            <li><a href="#">SỬA CHỮA</a></li>
+            <li><a href="#vali-section">VALI</a></li>
+            <li><a href="#balo-section">BALO</a></li>
+            <li><a href="#phukien-section">PHỤ KIỆN</a></li>
             <li>
                 <a href="/cart/view" title="Giỏ hàng">
-                    <!-- Icon giỏ hàng SVG -->
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4m1.6 8l1.5 6h9l1.5-6M8 21h.01M16 21h.01"/>
                     </svg>
                 </a>
             </li>
-
         </ul>
     </nav>
 </header>
 
-<!-- Filter -->
-
-<!-- Main Content -->
 <div class="main-content">
     <h1>Welcome to Vali Store</h1>
-    <div>
-        <h2>Sản phẩm nổi bật</h2>
+
+    <!-- Vali Section -->
+    <section id="vali-section">
+        <h2 class="section-header">VALI</h2>
         <div class="products-container">
-            <div th:each="product : ${products}" class="product-card">
+            <div th:each="product : ${products}" th:if="${product.id >= 1 && product.id <= 3}" class="product-card">
                 <img th:src="@{'/images/' + ${product.imageUrl}}" alt="Product Image"/>
                 <h3 th:text="${product.name}">Product Name</h3>
                 <p th:text="${product.description}">Description</p>
@@ -338,8 +317,45 @@
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
+    <!-- Balo Section -->
+    <section id="balo-section">
+        <h2 class="section-header">BALO</h2>
+        <div class="products-container">
+            <div th:each="product : ${products}" th:if="${product.id >= 4 && product.id <= 6}" class="product-card">
+                <img th:src="@{'/images/' + ${product.imageUrl}}" alt="Product Image"/>
+                <h3 th:text="${product.name}">Product Name</h3>
+                <p th:text="${product.description}">Description</p>
+                <p class="price">$<span th:text="${product.price}">0</span></p>
+                <div class="quantity-section">
+                    <label>Số lượng:</label>
+                    <input type="number" th:id="'quantity_' + ${product.id}" value="1" min="1"/>
+                    <button th:onclick="'addToCart(' + ${product.id} + ')'">Thêm vào giỏ</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Phụ kiện Section -->
+    <section id="phukien-section">
+        <h2 class="section-header">PHỤ KIỆN</h2>
+        <div class="products-container">
+            <div th:each="product : ${products}" th:if="${product.id >= 7 && product.id <= 15}" class="product-card">
+                <img th:src="@{'/images/' + ${product.imageUrl}}" alt="Product Image"/>
+                <h3 th:text="${product.name}">Product Name</h3>
+                <p th:text="${product.description}">Description</p>
+                <p class="price">$<span th:text="${product.price}">0</span></p>
+                <div class="quantity-section">
+                    <label>Số lượng:</label>
+                    <input type="number" th:id="'quantity_' + ${product.id}" value="1" min="1"/>
+                    <button th:onclick="'addToCart(' + ${product.id} + ')'">Thêm vào giỏ</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Container -->
     <div id="cart-container">
         <h2>Giỏ hàng của bạn</h2>
         <div id="cart-items"></div>
@@ -367,113 +383,117 @@
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-section">
-            <h3>SHOWROOM 1</h3>
-            <p>202 Phan Xích Long, Phường 7, Quận Phú Nhuận, TP HCM</p>
-            <p>📞 0902.678.910</p>
-            <p>⏰ Thời gian mở cửa: 8h30 – 21h30</p>
+            <h3>HỆ THỐNG CỬA HÀNG</h3>
+            <p>Store: 123 Xô Viết Nghệ Tĩnh, TP. Đà Nẵng</p>
+            <p>📞 0967564540</p>
+            <p>⏰ Giờ mở cửa: 9:00 - 22:00</p>
         </div>
         <div class="footer-section">
-            <h3>SHOWROOM 2</h3>
-            <p>276 Nguyễn Văn Lương, Phường 12, Quận 6, TP. Hồ Chí Minh</p>
-            <p>📞 0902.678.910</p>
-            <p>⏰ Thời gian mở cửa: 8h30 – 21h30</p>
+            <h3>DỊCH VU KHÁCH HÀNG</h3>
+            <a href="#">Chính sách bảo hành</a>
+            <a href="#">Hướng dẫn mua hàng</a>
+            <a href="#">Chính sách đổi trả</a>
+            <a href="#">Vận chuyển và giao hàng</a>
+            <a href="#">Câu hỏi thường gặp</a>
         </div>
         <div class="footer-section">
-            <h3>SHOWROOM 3</h3>
-            <p>479 Đường Quang Trung, Phường 10, Quận Gò Vấp, TP. Hồ Chí Minh</p>
-            <p>📞 0902.678.910</p>
-            <p>⏰ Thời gian mở cửa: 8h30 – 21h30</p>
+            <h3>LIÊN HỆ</h3>
+            <p>Email: cskh@valistore.com</p>
+            <p>Hotline: 1900.4540</p>
+            <p>Zalo: 0967564540</p>
         </div>
         <div class="footer-section">
-            <h3>VỀ CHÚNG TÔI</h3>
-            <p>SHOP Đồng Hồ Nam Nữ Chính Hãng Từ Năm 2004</p>
+            <h3>KẾT NỐI VỚI CHÚNG TÔI</h3>
+            <p>Theo dõi Vali Store để nhận thông tin mới nhất!</p>
             <div class="social-icons">
                 <a href="#" title="Facebook">Facebook</a>
-                <a href="#" title="YouTube">YouTube</a>
                 <a href="#" title="Instagram">Instagram</a>
                 <a href="#" title="TikTok">TikTok</a>
+                <a href="#" title="YouTube">YouTube</a>
             </div>
-            <p>HOTLINE: 0902.678.910</p>
+            <p>Đăng ký nhận tin</p>
+            <input type="email" placeholder="Nhập email của bạn" style="width: 100%; padding: 10px; margin-top: 10px;">
+            <button style="width: 100%; margin-top: 10px;">Đăng ký</button>
         </div>
     </div>
 </footer>
 
-<!-- JavaScript -->
-<script>
-    async function addToCart(productId) {
-        const quantityInput = document.getElementById(`quantity_${productId}`);
+    <!-- JavaScript -->
+    <script>
+        async function addToCart(productId) {
+            const quantityInput = document.getElementById(`quantity_${productId}`);
 
-        if (!quantityInput) {
-            console.error(`Không tìm thấy phần tử với ID: quantity_${productId}`);
-            return;
-        }
+            if (!quantityInput) {
+                console.error(`Không tìm thấy phần tử với ID: quantity_${productId}`);
+                return;
+            }
 
-        const quantity = quantityInput.value;
-        try {
-            const response = await fetch(`/cart/add?productId=${productId}&quantity=${quantity}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
+            const quantity = quantityInput.value;
+            try {
+                const response = await fetch(`/cart/add?productId=${productId}&quantity=${quantity}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    alert("Đã thêm sản phẩm vào giỏ hàng!");
+                    updateCartItems();
+                } else {
+                    alert("Có lỗi xảy ra khi thêm vào giỏ hàng!");
                 }
-            });
-
-            if (response.ok) {
-                alert("Đã thêm sản phẩm vào giỏ hàng!");
-                updateCartItems();
-            } else {
+            } catch (error) {
+                console.error("Lỗi:", error);
                 alert("Có lỗi xảy ra khi thêm vào giỏ hàng!");
             }
-        } catch (error) {
-            console.error("Lỗi:", error);
-            alert("Có lỗi xảy ra khi thêm vào giỏ hàng!");
         }
-    }
 
-    async function updateCartItems() {
-        try {
-            const response = await fetch("/cart");
+        async function updateCartItems() {
+            try {
+                const response = await fetch("/cart");
 
-            // Kiểm tra content-type của phản hồi
-            const contentType = response.headers.get("content-type");
-            if (contentType && contentType.includes("application/json")) {
-                const cartItems = await response.json();
-                const cartDiv = document.getElementById("cart-items");
-                cartDiv.innerHTML = "";
+                // Kiểm tra content-type của phản hồi
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    const cartItems = await response.json();
+                    const cartDiv = document.getElementById("cart-items");
+                    cartDiv.innerHTML = "";
 
-                if (Array.isArray(cartItems)) {
-                    let total = 0;
-                    cartItems.forEach(item => {
-                        const product = item.product;
-                        const itemTotal = product.price * item.quantity;
-                        total += itemTotal;
+                    if (Array.isArray(cartItems)) {
+                        let total = 0;
+                        cartItems.forEach(item => {
+                            const product = item.product;
+                            const itemTotal = product.price * item.quantity;
+                            total += itemTotal;
 
-                        const itemDiv = document.createElement("div");
-                        itemDiv.innerHTML = `
-                        <p>${product.name} - ${product.price.toLocaleString('vi-VN')}₫ x ${item.quantity} = ${itemTotal.toLocaleString('vi-VN')}₫</p>
-                    `;
-                        cartDiv.appendChild(itemDiv);
-                    });
+                            const itemDiv = document.createElement("div");
+                            itemDiv.innerHTML = `
+                            <p>${product.name} - ${product.price.toLocaleString('vi-VN')}₫ x ${item.quantity} = ${itemTotal.toLocaleString('vi-VN')}₫</p>
+                        `;
+                            cartDiv.appendChild(itemDiv);
+                        });
 
-                    const totalDiv = document.createElement("p");
-                    totalDiv.innerHTML = `<strong>Tổng cộng: ${total.toLocaleString('vi-VN')}₫</strong>`;
-                    cartDiv.appendChild(totalDiv);
+                        const totalDiv = document.createElement("p");
+                        totalDiv.innerHTML = `<strong>Tổng cộng: ${total.toLocaleString('vi-VN')}₫</strong>`;
+                        cartDiv.appendChild(totalDiv);
+                    } else {
+                        // console.error("API /cart không trả về một mảng.");
+                    }
                 } else {
-                    // console.error("API /cart không trả về một mảng.");
+                    // console.error("API /cart trả về HTML thay vì JSON.");
                 }
-            } else {
-                // console.error("API /cart trả về HTML thay vì JSON.");
+            } catch (error) {
+                // console.error("Lỗi khi cập nhật giỏ hàng:", error);
             }
-        } catch (error) {
-            // console.error("Lỗi khi cập nhật giỏ hàng:", error);
         }
-    }
 
 
 
-    // Initialize cart on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        updateCartItems();
-    });
-</script>
-</body>
-</html>
+        // Initialize cart on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartItems();
+        });
+    </script>
+    </body>
+    </html>

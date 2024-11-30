@@ -278,10 +278,9 @@
     <nav class="nav-container">
         <a href="/products" class="logo">SHOPVALI.COM</a>
         <ul class="nav-menu">
-            <li><a href="#">BÁN CHẠY</a></li>
-            <li><a href="#">THƯƠNG HIỆU</a></li>
-            <li><a href="#">NAM</a></li>
-            <li><a href="#">NỮ</a></li>
+            <li><a href="#">VALI</a></li>
+            <li><a href="#">BALO</a></li>
+            <li><a href="#">PHỤ KIỆN</a></li>
             <li><a href="#">SỬA CHỮA</a></li>
         </ul>
     </nav>
@@ -308,9 +307,9 @@
                     <span th:text="${#numbers.formatDecimal(item.product.price, 2, 'COMMA', 0, 'POINT')}">0.00</span>$
                 </div>
                 <div class="item-quantity">
-                    <button class="quantity-btn">-</button>
-                    <span th:text="${item.quantity}">0</span>
-                    <button class="quantity-btn">+</button>
+                    <button class="quantity-btn" onclick="changeQuantity(this, -1)">-</button>
+                    <span id="quantity-${item.id}" th:text="${item.quantity}">0</span>
+                    <button class="quantity-btn" onclick="changeQuantity(this, 1)">+</button>
                 </div>
                 <div class="item-total">
                     <span th:text="${item.product.price * item.quantity}">0.00</span>$
@@ -349,35 +348,88 @@
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-section">
-            <h3>SHOWROOM 1</h3>
-            <p>202 Phan Xích Long, Phường 7, Quận Phú Nhuận, TP HCM</p>
-            <p>📞 0902.678.910</p>
-            <p>⏰ Thời gian mở cửa: 8h30 – 21h30</p>
+            <h3>HỆ THỐNG CỬA HÀNG</h3>
+            <p>Store: 123 Xô Viết Nghệ Tĩnh, TP. Đà Nẵng</p>
+            <p>📞 0967564540</p>
+            <p>⏰ Giờ mở cửa: 9:00 - 22:00</p>
         </div>
         <div class="footer-section">
-            <h3>SHOWROOM 2</h3>
-            <p>276 Nguyễn Văn Lương, Phường 12, Quận 6, TP. Hồ Chí Minh</p>
-            <p>📞 0902.678.910</p>
-            <p>⏰ Thời gian mở cửa: 8h30 – 21h30</p>
+            <h3>DỊCH VU KHÁCH HÀNG</h3>
+            <a href="#">Chính sách bảo hành</a>
+            <a href="#">Hướng dẫn mua hàng</a>
+            <a href="#">Chính sách đổi trả</a>
+            <a href="#">Vận chuyển và giao hàng</a>
+            <a href="#">Câu hỏi thường gặp</a>
         </div>
         <div class="footer-section">
-            <h3>SHOWROOM 3</h3>
-            <p>479 Đường Quang Trung, Phường 10, Quận Gò Vấp, TP. Hồ Chí Minh</p>
-            <p>📞 0902.678.910</p>
-            <p>⏰ Thời gian mở cửa: 8h30 – 21h30</p>
+            <h3>LIÊN HỆ</h3>
+            <p>Email: cskh@valistore.com</p>
+            <p>Hotline: 1900.4540</p>
+            <p>Zalo: 0967564540</p>
         </div>
         <div class="footer-section">
-            <h3>VỀ CHÚNG TÔI</h3>
-            <p>SHOP Đồng Hồ Nam Nữ Chính Hãng Từ Năm 2004</p>
+            <h3>KẾT NỐI VỚI CHÚNG TÔI</h3>
+            <p>Theo dõi Vali Store để nhận thông tin mới nhất!</p>
             <div class="social-icons">
                 <a href="#" title="Facebook">Facebook</a>
-                <a href="#" title="YouTube">YouTube</a>
                 <a href="#" title="Instagram">Instagram</a>
                 <a href="#" title="TikTok">TikTok</a>
+                <a href="#" title="YouTube">YouTube</a>
             </div>
-            <p>HOTLINE: 0902.678.910</p>
+            <p>Đăng ký nhận tin</p>
+            <input type="email" placeholder="Nhập email của bạn" style="width: 100%; padding: 10px; margin-top: 10px;">
+            <button style="width: 100%; margin-top: 10px;">Đăng ký</button>
         </div>
     </div>
 </footer>
+
+<script>
+    function changeQuantity(btn, change) {
+        const quantitySpan = btn.parentElement.querySelector('span');
+        let currentQuantity = parseInt(quantitySpan.textContent);
+        let newQuantity = Math.max(1, currentQuantity + change);
+
+        quantitySpan.textContent = newQuantity;
+
+        // Gửi yêu cầu cập nhật số lượng đến server
+        fetch(`/cart/update?productId=${productId}&quantity=${newQuantity}`, {
+            method: 'POST'
+        });
+    }
+</script>
+
+<script>
+    function changeQuantity(btn, change) {
+        const quantitySpan = btn.parentElement.querySelector('span');
+        const itemRow = btn.closest('.cart-item');
+        const priceElement = itemRow.querySelector('.item-price span');
+        const itemTotalElement = itemRow.querySelector('.item-total span');
+        const totalElement = document.querySelector('.cart-total span:last-child');
+
+        let currentQuantity = parseInt(quantitySpan.textContent);
+        let price = parseFloat(priceElement.textContent);
+        let newQuantity = Math.max(1, currentQuantity + change);
+
+        // Cập nhật số lượng
+        quantitySpan.textContent = newQuantity;
+
+        // Cập nhật tổng giá của sản phẩm
+        let newItemTotal = (price * newQuantity).toFixed(2);
+        itemTotalElement.textContent = newItemTotal;
+
+        // Cập nhật tổng giá của giỏ hàng
+        let cartTotal = 0;
+        document.querySelectorAll('.item-total span').forEach(totalSpan => {
+            cartTotal += parseFloat(totalSpan.textContent);
+        });
+
+        totalElement.textContent = cartTotal.toFixed(2);
+
+        // Gửi yêu cầu cập nhật số lượng đến server
+        fetch(`/cart/update?productId=${productId}&quantity=${newQuantity}`, {
+            method: 'POST'
+        });
+    }
+</script>
 </body>
 </html>
