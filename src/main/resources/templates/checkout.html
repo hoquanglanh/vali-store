@@ -13,7 +13,7 @@
 <body>
 <div class="container my-5">
     <h1>Checkout</h1>
-    <form action="/order/place" method="post">
+    <form id="orderForm" action="/order/place" method="post">
         <div class="row mb-3">
             <div class="col">
                 <label for="name" class="form-label">Họ và Tên (bắt buộc)</label>
@@ -34,11 +34,24 @@
                 <input type="text" class="form-control" id="address" name="address" required>
             </div>
             <div class="col">
-                <label for="city" class="form-label">Thành phố</label>
+                <label for="city" class="form-label">Tỉnh/Thành Phố</label>
                 <select class="form-select" id="city" name="city">
-                    <option selected>Hồ Chí Minh</option>
-                    <option>Huyện Bình Chánh</option>
-                    <option>An Phú Tây</option>
+                    <option value="">Chọn Tỉnh/Thành Phố</option>
+                    <option value="HCM">TP.HCM</option>
+                    <option value="HN">Hà Nội</option>
+                    <option value="DN">Đà Nẵng</option>
+                    <option value="HP">Hải Phòng</option>
+                    <option value="CT">Cần Thơ</option>
+                    <option value="BD">Bình Dương</option>
+                    <option value="ĐN">Đồng Nai</option>
+                    <option value="AG">An Giang</option>
+                    <option value="VT">Vũng Tàu</option>
+                    <option value="KH">Khánh Hòa</option>
+                    <option value="NB">Ninh Bình</option>
+                    <option value="TH">Thanh Hóa</option>
+                    <option value="ĐT">Đồng Tháp</option>
+                    <option value="LA">Lâm Đồng</option>
+                    <option value="LQ">Long An</option>
                 </select>
             </div>
         </div>
@@ -50,7 +63,7 @@
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="shipping" id="shipping-2" value="standard">
-                <label class="form-check-label" for="shipping-2">Giao hòa tốc chờ (MIỄN PHÍ với đơn hàng tổng hóa tốc khu vực bạn chọn)</label>
+                <label class="form-check-label" for="shipping-2">Giao hỏa tốc chờ (MIỄN PHÍ với đơn hàng tổng hóa tốc khu vực bạn chọn)</label>
             </div>
         </div>
         <div class="mb-3">
@@ -63,5 +76,41 @@
         <button type="submit" class="btn btn-primary">Đặt hàng</button>
     </form>
 </div>
+
+<script>
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Ngăn chặn form submit mặc định
+
+        // Kiểm tra các trường bắt buộc
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const city = document.getElementById('city').value;
+
+        if (name && phone && address && city) {
+            // Tạo modal thông báo đặt hàng thành công
+            const modalHtml = `
+        <div class="modal fade show" id="orderSuccessModal" tabindex="-1" style="display: block; background-color: rgba(0,0,0,0.5);">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Đặt Hàng Thành Công</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Cảm ơn bạn! Đơn hàng của bạn đã được đặt thành công.</p>
+                        <p>Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('orderSuccessModal').remove()">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+    });
+</script>
 </body>
 </html>
