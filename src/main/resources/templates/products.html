@@ -11,6 +11,7 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             scroll-behavior: smooth;
+            scroll-padding-top: 80px;
         }
 
         /* Header Styles */
@@ -21,6 +22,20 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+        }
+
+        .section-header {
+            padding: 20px;
+            margin: 40px 0 20px 0;
+            border-radius: 8px;
+            color: #333;
+            font-size: 1.5em;
+            text-align: center;
+            background-color: #f8f9fa;
+        }
+
+        section {
+            scroll-margin-top: 80px; /* Để tránh header che mất phần đầu của section */
         }
 
         .nav-container {
@@ -301,11 +316,11 @@
 <div class="main-content">
     <h1>Welcome to Vali Store</h1>
 
-    <!-- Vali Section -->
+    <!-- Section VALI -->
     <section id="vali-section">
         <h2 class="section-header">VALI</h2>
         <div class="products-container">
-            <div th:each="product : ${products}" th:if="${product.id >= 1 && product.id <= 3}" class="product-card">
+            <div th:each="product : ${products}" th:if="${product.category == T(com.example.store.model.Product.ProductCategory).VALI}" class="product-card">
                 <img th:src="@{'/images/' + ${product.imageUrl}}" alt="Product Image"/>
                 <h3 th:text="${product.name}">Product Name</h3>
                 <p th:text="${product.description}">Description</p>
@@ -319,11 +334,11 @@
         </div>
     </section>
 
-    <!-- Balo Section -->
+    <!-- Section BALO -->
     <section id="balo-section">
         <h2 class="section-header">BALO</h2>
         <div class="products-container">
-            <div th:each="product : ${products}" th:if="${product.id >= 4 && product.id <= 6}" class="product-card">
+            <div th:each="product : ${products}" th:if="${product.category == T(com.example.store.model.Product.ProductCategory).BACKPACK}" class="product-card">
                 <img th:src="@{'/images/' + ${product.imageUrl}}" alt="Product Image"/>
                 <h3 th:text="${product.name}">Product Name</h3>
                 <p th:text="${product.description}">Description</p>
@@ -337,11 +352,11 @@
         </div>
     </section>
 
-    <!-- Phụ kiện Section -->
+    <!-- Section PHỤ KIỆN -->
     <section id="phukien-section">
         <h2 class="section-header">PHỤ KIỆN</h2>
         <div class="products-container">
-            <div th:each="product : ${products}" th:if="${product.id >= 7 && product.id <= 15}" class="product-card">
+            <div th:each="product : ${products}" th:if="${product.category == T(com.example.store.model.Product.ProductCategory).ACCESSORY}" class="product-card">
                 <img th:src="@{'/images/' + ${product.imageUrl}}" alt="Product Image"/>
                 <h3 th:text="${product.name}">Product Name</h3>
                 <p th:text="${product.description}">Description</p>
@@ -355,7 +370,6 @@
         </div>
     </section>
 
-    <!-- Cart Container -->
     <div id="cart-container">
         <h2>Giỏ hàng của bạn</h2>
         <div id="cart-items"></div>

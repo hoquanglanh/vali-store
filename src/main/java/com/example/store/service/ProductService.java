@@ -19,5 +19,24 @@ public class ProductService {
     public Product getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
+
+    public void saveProduct(Product product) {
+        productRepository.save(product);
+    }
+
+    public void updateProduct(Long id, Product product) {
+        Product existingProduct = productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
+        existingProduct.setName(product.getName());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setDescription(product.getDescription());
+        existingProduct.setImageUrl(product.getImageUrl());
+        existingProduct.setQuantity(product.getQuantity());
+        productRepository.save(existingProduct);
+    }
+
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
+    }
+
 }
 
