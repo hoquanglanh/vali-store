@@ -6,23 +6,15 @@
     <title>Edit Product</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #6a11cb;
-            --secondary-color: #2575fc;
-            --background-color: #f4f7f6;
-            --text-color: #333;
-            --white: #ffffff;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: var(--background-color);
+            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -31,95 +23,184 @@
         }
 
         .container {
-            background: var(--white);
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             padding: 2.5rem;
             width: 100%;
             max-width: 700px;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h1 {
-            color: var(--primary-color);
-            font-size: 2rem;
-            font-weight: 700;
+            color: #6a4c93;
+            text-align: center;
+            font-size: 2.2rem;
             margin-bottom: 2rem;
+            font-weight: 600;
+            position: relative;
             padding-bottom: 1rem;
-            border-bottom: 2px solid rgba(106, 17, 203, 0.1);
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #f6d365, #fda085);
+            border-radius: 2px;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.8rem;
+            position: relative;
         }
 
         label {
             display: block;
-            margin-bottom: 0.5rem;
-            color: var(--primary-color);
-            font-weight: 600;
+            margin-bottom: 0.7rem;
+            color: #6a4c93;
+            font-weight: 500;
+            font-size: 1.1rem;
         }
 
-        input, select, textarea {
+        .required-field::after {
+            content: '*';
+            color: #ff6b6b;
+            margin-left: 4px;
+        }
+
+        input, textarea, .form-select {
             width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
+            padding: 0.9rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
             font-size: 1rem;
             transition: all 0.3s ease;
+            background: white;
         }
 
-        input:focus, select:focus, textarea:focus {
+        input:focus, textarea:focus, .form-select:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+            border-color: #f6d365;
+            box-shadow: 0 0 0 4px rgba(246, 211, 101, 0.15);
         }
 
         textarea {
-            min-height: 120px;
+            min-height: 150px;
             resize: vertical;
+            line-height: 1.5;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 1rem;
+            top: 2.8rem;
+            color: #6a4c93;
+            transition: all 0.3s ease;
+        }
+
+        .form-group:focus-within .input-icon {
+            color: #f6d365;
         }
 
         .button-group {
             display: flex;
             gap: 1rem;
-            margin-top: 2rem;
+            margin-top: 2.5rem;
         }
 
         .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            text-decoration: none;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
             font-weight: 600;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: var(--white);
+            background: linear-gradient(90deg, #f6d365, #fda085);
+            color: white;
+            flex: 2;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(246, 211, 101, 0.4);
         }
 
         .btn-back {
-            background-color: #f8f9fa;
-            color: var(--text-color);
-            border: 1px solid #e9ecef;
+            background: #f5e6d3;
+            color: #6a4c93;
+            text-decoration: none;
+            flex: 1;
         }
 
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+        .btn-back:hover {
+            background: #e7d5c1;
+            transform: translateY(-2px);
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            opacity: 1;
+            height: 30px;
         }
 
         @media (max-width: 768px) {
+            .container {
+                padding: 2rem;
+            }
+
             .button-group {
                 flex-direction: column;
             }
 
             .btn {
                 width: 100%;
-                justify-content: center;
+            }
+            .form-select {
+                width: 100%;
+                padding: 0.9rem 1rem;
+                border: 2px solid #e0e0e0;
+                border-radius: 12px;
+                font-size: 1rem;
+                transition: all 0.3s ease;
+                background: white;
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+                background-repeat: no-repeat;
+                background-position: right 1rem center;
+                background-size: 1em;
+            }
+
+            .form-select:focus {
+                outline: none;
+                border-color: #f6d365;
+                box-shadow: 0 0 0 4px rgba(246, 211, 101, 0.15);
             }
         }
     </style>
@@ -129,27 +210,29 @@
     <h1>Edit Product</h1>
     <form action="#" th:action="@{/admin/product/update/{id}(id=${product.id})}" th:object="${product}" method="post">
         <div class="form-group">
-            <label>Product Name</label>
+            <label class="required-field">Product Name</label>
             <input
                     type="text"
                     th:field="*{name}"
                     required
                     placeholder="Enter product name"
             />
+            <i class="fas fa-box input-icon"></i>
         </div>
 
         <div class="form-group">
-            <label>Category</label>
-            <select th:field="*{category}" required>
+            <label class="required-field">Category</label>
+            <select th:field="*{category}" required class="form-select">
                 <option value="">Select a category</option>
                 <option th:each="category : ${categories}"
                         th:value="${category}"
                         th:text="${category}">Category</option>
             </select>
+            <i class="fas fa-folder input-icon"></i>
         </div>
 
         <div class="form-group">
-            <label>Price</label>
+            <label class="required-field">Price</label>
             <input
                     type="number"
                     th:field="*{price}"
@@ -158,28 +241,31 @@
                     step="0.01"
                     min="0"
             />
+            <i class="fas fa-tag input-icon"></i>
         </div>
 
         <div class="form-group">
-            <label>Description</label>
+            <label class="required-field">Description</label>
             <textarea
                     th:field="*{description}"
                     required
                     placeholder="Enter product description"
             ></textarea>
+            <i class="fas fa-align-left input-icon"></i>
         </div>
 
         <div class="form-group">
-            <label>Image URL</label>
+            <label class="required-field">Image URL</label>
             <input
                     th:field="*{imageUrl}"
                     required
                     placeholder="Enter image URL"
             />
+            <i class="fas fa-image input-icon"></i>
         </div>
 
         <div class="form-group">
-            <label>Quantity</label>
+            <label class="required-field">Quantity</label>
             <input
                     type="number"
                     th:field="*{quantity}"
@@ -187,6 +273,7 @@
                     placeholder="Enter quantity"
                     min="0"
             />
+            <i class="fas fa-warehouse input-icon"></i>
         </div>
 
         <div class="button-group">
