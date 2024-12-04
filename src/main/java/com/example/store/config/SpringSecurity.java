@@ -26,24 +26,34 @@ public class SpringSecurity {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable()) // Vô hiệu hóa CSRF
+        http
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers("/register/**").permitAll() // Cho phép truy cập không cần đăng nhập
+                                .requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/index").permitAll()
-                                .requestMatchers("/users").hasRole("ADMIN") // Chỉ cho phép ADMIN truy cập
+                                .requestMatchers("/products").permitAll()
+                                .requestMatchers("/images/**").permitAll()
+                                .requestMatchers("/cart/**").authenticated() // Yêu cầu đăng nhập cho các URL liên quan đến giỏ hàng
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form ->
                         form
-                                .loginPage("/login") // Trang đăng nhập tùy chỉnh
+                                .loginPage("/login")
                                 .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/products") // Chuyển hướng sau khi đăng nhập thành công
+                                .defaultSuccessUrl("/products", true)
                                 .permitAll()
+                )
+                .exceptionHandling(exception ->
+                        exception.authenticationEntryPoint((request, response, authException) -> {
+                            // Chuyển hướng đến trang login nếu chưa đăng nhập
+                            response.sendRedirect("/login");
+                        })
                 )
                 .logout(logout ->
                         logout
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // URL logout
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                                .logoutSuccessUrl("/login")
                                 .permitAll()
                 );
 
