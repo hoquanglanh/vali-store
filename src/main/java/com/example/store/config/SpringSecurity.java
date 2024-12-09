@@ -33,6 +33,7 @@ public class SpringSecurity {
                                 .requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/index").permitAll()
                                 .requestMatchers("/products").permitAll()
+                                .requestMatchers("/products/api/**").permitAll() // Thêm dòng này để mở khóa API
                                 .requestMatchers("/images/**").permitAll()
                                 .requestMatchers("/cart/**").authenticated() // Yêu cầu đăng nhập cho các URL liên quan đến giỏ hàng
                                 .anyRequest().authenticated()

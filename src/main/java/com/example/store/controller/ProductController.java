@@ -7,6 +7,8 @@
     import org.springframework.stereotype.Controller;
     import org.springframework.ui.Model;
     import org.springframework.web.bind.annotation.*;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.http.HttpStatus;
 
     import java.util.List;
 
@@ -33,11 +35,52 @@
             return productService.getProductById(id);
         }
 
-        // Endpoint mới: Lấy sản phẩm theo category dạng JSON
-        @GetMapping("/api/category/{category}")
+        // Endpoint POST: Thêm sản phẩm mới qua API
+        @PostMapping("/api")
         @ResponseBody
-        public List<Product> getProductsByCategory(@PathVariable Product.ProductCategory category) {
-            return repo.findByCategory(category);
+        public ResponseEntity<?> createProduct(@RequestBody Product newProduct) {
+            try {
+                // Validate dữ liệu đầu vào
+                if (newProduct.getName() == null || newProduct.getName().isEmpty()) {
+                    return new ResponseEntity<>("Product name is required", HttpStatus.BAD_REQUEST);
+                }
+
+                Product savedProduct = repo.save(newProduct);
+                return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+            } catch (Exception e) {
+                return new ResponseEntity<>("Error creating product: " + e.getMessage(),
+                        HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        // Endpoint PUT: Cập nhật sản phẩm theo ID
+        @PutMapping("/api/{id}")
+        @ResponseBody
+        public Product updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
+            Product existingProduct = productService.getProductById(id);
+            if (existingProduct != null) {
+                existingProduct.setName(updatedProduct.getName());
+                existingProduct.setPrice(updatedProduct.getPrice());
+                existingProduct.setQuantity(updatedProduct.getQuantity());
+                existingProduct.setCategory(updatedProduct.getCategory());
+                existingProduct.setDescription(updatedProduct.getDescription());
+                return repo.save(existingProduct);
+            } else {
+                throw new RuntimeException("Product with ID " + id + " not found.");
+            }
+        }
+
+        // Endpoint DELETE: Xóa sản phẩm theo ID
+        @DeleteMapping("/api/{id}")
+        @ResponseBody
+        public String deleteProduct(@PathVariable Long id) {
+            Product existingProduct = productService.getProductById(id);
+            if (existingProduct != null) {
+                repo.deleteById(id);
+                return "Product with ID " + id + " has been deleted successfully.";
+            } else {
+                throw new RuntimeException("Product with ID " + id + " not found.");
+            }
         }
 
         // Hiển thị tất cả sản phẩm

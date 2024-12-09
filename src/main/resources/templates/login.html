@@ -1,76 +1,136 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
->
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Registration and Login System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Đăng nhập - ShopVali.com</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 480px;
+            padding: 2.5rem;
+            margin: 1rem;
+        }
+
+        .login-title {
+            color: #1d3557;
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            color: #1d3557;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            padding: 0.8rem 1rem;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+        }
+
+        .btn-login {
+            background: #3498db;
+            color: white;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 1rem;
+            transition: all 0.2s;
+        }
+
+        .btn-login:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        .form-check-label {
+            color: #495057;
+        }
+
+        .register-link, .forgot-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .register-link:hover, .forgot-link:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #6c757d;
+        }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:fragment="header">
-    <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/static}">Registration and Login System</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</nav>
-<br />
-<br />
-<br />
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <div th:if="${param.error}">
-                <div class="alert alert-danger">Invalid Email and Password.</div>
-            </div>
-            <div th:if="${param.logout}">
-                <div class="alert alert-success">You have been logged out.</div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="text-center">Login Form</h3>
-                </div>
-                <div class="card-body">
-                    <form
-                            method="post"
-                            th:action="@{/login}"
-                            class="form-horizontal"
-                            role="form"
-                    >
-                        <div class="mb-3">
-                            <label for="username" class="control-label">Email *</label>
-                            <input type="text"
-                                   id="username"
-                                   name="username"
-                                   class="form-control"
-                                   placeholder="Email"
-                            />
-                        </div>
+<div class="login-container">
+    <h1 class="login-title">Đăng nhập vào ShopVali</h1>
 
-                        <div class="mb-3">
-                            <label for="password" class="control-label">Password *</label>
-                            <input type="password"
-                                   id="password"
-                                   name="password"
-                                   class="form-control"
-                                   placeholder="Password"
-                            />
-                        </div>
+    <form method="post" th:action="@{/login}">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="username"
+                    placeholder="Nhập địa chỉ email của bạn"
+                    required
+            />
+        </div>
 
-                        <div class="mb-3">
-                            <button type="submit" class="btn btn-primary">Login</button>
-                            <span> Not registered?
-                            <a th:href="@{/register}"> Register/SignUp Here</a>
-                        </span>
-                        </div>
-                    </form>
-                </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Mật khẩu</label>
+            <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="Nhập mật khẩu của bạn"
+                    required
+            />
+        </div>
+
+        <div class="mb-3">
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="remember">
+                <label class="form-check-label" for="remember">Ghi nhớ đăng nhập</label>
             </div>
         </div>
-    </div>
+
+        <button type="submit" class="btn btn-login">ĐĂNG NHẬP</button>
+
+        <div class="login-footer">
+            <div class="mb-2">
+                Chưa có tài khoản? <a th:href="@{/register}" class="register-link">Đăng ký ngay</a>
+            </div>
+        </div>
+    </form>
 </div>
 </body>
 </html>
