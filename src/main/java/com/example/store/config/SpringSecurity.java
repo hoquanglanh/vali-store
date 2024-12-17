@@ -39,6 +39,7 @@ public class SpringSecurity {
                                 .requestMatchers("/products").permitAll() // Cho phép truy cập danh sách sản phẩm
                                 .requestMatchers("/admin/products").hasRole("ADMIN") // Chỉ ADMIN mới được truy cập trang quản lý sản phẩm
                                 .requestMatchers("/users").hasRole("ADMIN") // Chỉ ADMIN mới được truy cập trang quản lý người dùng
+                                .requestMatchers("/cart/view").authenticated() // Yêu cầu phải đăng nhập mới được truy cập giỏ hàng
                                 .anyRequest().permitAll() // Các request khác đều được cho phép
                 )
                 .formLogin(form ->

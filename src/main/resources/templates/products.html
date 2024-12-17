@@ -448,6 +448,7 @@
             }
 
             const quantity = quantityInput.value;
+
             try {
                 const response = await fetch(`/cart/add?productId=${productId}&quantity=${quantity}`, {
                     method: 'POST',
@@ -456,10 +457,16 @@
                     }
                 });
 
-                if (response.ok) {
+                if (response.redirected && response.url.includes("/login")) {
+                    // Nếu server chuyển hướng đến trang đăng nhập
+                    alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
+                    window.location.href = "/login"; // Chuyển hướng đến trang đăng nhập
+                } else if (response.ok) {
+                    // Thêm sản phẩm thành công
                     alert("Đã thêm sản phẩm vào giỏ hàng!");
                     updateCartItems();
                 } else {
+                    // Xử lý lỗi khác
                     alert("Có lỗi xảy ra khi thêm vào giỏ hàng!");
                 }
             } catch (error) {
@@ -467,6 +474,7 @@
                 alert("Có lỗi xảy ra khi thêm vào giỏ hàng!");
             }
         }
+
 
         async function updateCartItems() {
             try {
