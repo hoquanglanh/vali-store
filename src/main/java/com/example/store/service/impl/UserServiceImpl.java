@@ -45,15 +45,15 @@ public class UserServiceImpl implements UserService {
         Role role; // Biến lưu vai trò của người dùng
         if (existingUsers.isEmpty()) {
             // Nếu là người dùng đầu tiên, gán vai trò "ROLE_ADMIN"
-            role = roleRepository.findByName("ROLE_USER");
+            role = roleRepository.findByName("ROLE_ADMIN");
             if (role == null) {
-                role = checkRoleExist("ROLE_USER"); // Tạo ROLE_ADMIN nếu chưa có
+                role = checkRoleExist("ROLE_ADMIN"); // Tạo ROLE_ADMIN nếu chưa có
             }
         } else {
             // Nếu không phải người dùng đầu tiên, gán vai trò "ROLE_USER"
-            role = roleRepository.findByName("ROLE_ADMIN");
+            role = roleRepository.findByName("ROLE_USER");
             if (role == null) {
-                role = checkRoleExist("ROLE_ADMIN"); // Tạo ROLE_USER nếu chưa có
+                role = checkRoleExist("ROLE_USER"); // Tạo ROLE_USER nếu chưa có
             }
         }
 
